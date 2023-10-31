@@ -1,0 +1,30 @@
+@startuml image_upload_flow
+!theme cerulean-outline
+
+actor User
+[AWS S3] as S3
+[React] as frontend
+frontend --> S3 : Fetches files using presigned URL
+frontend --> S3 : Uploads files using presigned URL
+
+package "Backend" {
+  [FastAPI (Rest API)] as FastAPI
+  [AWS SDK (boto3)] as Boto3
+  [AWS SES] as SES
+  database "MongoDB" as MongoDB
+}
+
+User -> frontend : Interacts with the application
+
+frontend -> FastAPI : Sends HTTP requests
+frontend <- FastAPI : Receives HTTP response
+
+' frontend -> FastAPI : Requests presigned URL
+FastAPI -> Boto3 : Presigned URL generation
+' FastAPI <- Boto3 : Presigned URL
+' frontend <- FastAPI : Presigned URL
+
+FastAPI --> MongoDB : Database operations
+FastAPI --> SES : Email requests
+
+@enduml

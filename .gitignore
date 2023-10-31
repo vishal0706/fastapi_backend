@@ -1,0 +1,12 @@
+*.env
+env/
+/venv
+__pycache__
+.vscode/
+.DS_Store
+*.log
+scripts/*
+tests/*
+scripts/*
+out/*
+poetry.lock
